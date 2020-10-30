@@ -34,5 +34,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "country-code-lookup": "^0.0.18",
+    "dayjs": "^1.9.4",
+    "node-fetch": "^2.6.1",
+    "scramjet": "^4.35.2"
   }
 }
