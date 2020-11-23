@@ -1,11 +1,14 @@
 import React from "react";
-import WorldMap from "./Components/WorldMap/WorldMap";
+import PageCoverageTimeline from "./Components/PageCovergeTimeline";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <WorldMap width={window.innerWidth} height={window.innerHeight} />
+      <PageCoverageTimeline
+        width={window.innerWidth}
+        height={window.innerHeight}
+      />
     </div>
   );
 }

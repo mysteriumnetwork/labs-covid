@@ -6,7 +6,7 @@ import { getPaths, getProjections } from "./utils";
 const WorldMap = ({ width = 400, height = 200, data }) => {
   const [countries, setCountries] = useState({});
   useEffect(() => {
-    fetch("/json/50m.json")
+    fetch("/json/country.json")
       .then((res) => res.json())
       .then((world) => {
         const countries = topojson.feature(world, world.objects.countries);

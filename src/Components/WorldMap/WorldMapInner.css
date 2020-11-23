@@ -1,0 +1,29 @@
+.tooltip {
+  z-index: 9999;
+  background-color: #4a5c6a !important;
+  opacity: 1;
+}
+.tooltip.place-top::before {
+  border-color: #4a5c6a transparent !important;
+}
+.tooltip.place-bottom::before {
+  border-color: #4a5c6a transparent !important;
+}
+.tooltip.place-left::before {
+  border-color: #4a5c6a transparent !important;
+}
+.tooltip.place-right::before {
+  border-color: #4a5c6a transparent !important;
+}
+.tooltip.place-top::after {
+  border-color: #4a5c6a transparent !important;
+}
+.tooltip.place-bottom::after {
+  border-color: #4a5c6a transparent !important;
+}
+.tooltip.place-left::after {
+  border-color: #4a5c6a transparent !important;
+}
+.tooltip.place-right::after {
+  border-color: #4a5c6a transparent !important;
+}
