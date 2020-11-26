@@ -14,7 +14,7 @@ const TimeLine = ({ activeDateIndex = 0, dates, onDateClick }) => {
         linePadding={100}
         styles={{
           background: "#f8f8f8",
-          foreground: "#ba88de",
+          foreground: "#635af0",
           outline: "#dfdfdf",
         }}
       />

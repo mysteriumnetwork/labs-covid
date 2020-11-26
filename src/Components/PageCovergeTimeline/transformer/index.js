@@ -3,11 +3,9 @@ import compare_asc from "date-fns/compare_asc";
 import COUNTRY_CODES from "./countryCode";
 
 export const transformData = (coverageData, covidData) => {
-  const coverageDates = Object.keys(coverageData);
   const covidDates = Object.keys(covidData);
-  const dates = [...new Set([...coverageDates, ...covidDates])];
   const countrycodes = Object.keys(COUNTRY_CODES);
-  const dateObject = dates
+  const dateObject = covidDates
     .filter((d) => d !== "Invalid Date")
     .sort((a, b) => compare_asc(a, b));
   const data = dateObject.reduce((final, date, index) => {
@@ -24,7 +22,7 @@ export const transformData = (coverageData, covidData) => {
         recovered: pRecovered = 0,
         confirmed: pConfirmed = 0,
         confirmed: pCoverage = 0,
-      } = preDatum[code.toUpperCase()] || {};
+      } = preDatum[[code.toUpperCase()]] || {};
 
       return {
         ...result,
@@ -33,6 +31,8 @@ export const transformData = (coverageData, covidData) => {
           recovered: recovered || pRecovered,
           confirmed: confirmed || pConfirmed,
           coverage: coverage || pCoverage,
+          code: code.toUpperCase(),
+          ...COUNTRY_CODES[code],
         },
       };
     }, {});

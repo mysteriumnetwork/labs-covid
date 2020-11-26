@@ -1,0 +1,27 @@
+.pageRoot {
+  padding: 0px 20px;
+}
+.mapContainer {
+  display: flex;
+}
+.detail {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.map {
+  flex-grow: 4;
+}
+.timelineContainer {
+  display: flex;
+}
+.buttonContainer {
+  flex-grow: 0.1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dateText {
+  font-weight: bold;
+}

@@ -10,13 +10,14 @@ const WorldMapInner = ({
   height,
   width,
   data = {},
+  activeCountry,
 }) => {
-  const inputEl = React.useRef(null);
-  const t = React.useRef(null);
+  const chinaTooltip = React.useRef(null);
+  const other = React.useRef(null);
   const { features = [] } = countries;
   React.useEffect(() => {
     ReactTooltip.rebuild();
-    ReactTooltip.show(inputEl.current);
+    ReactTooltip.show(chinaTooltip.current);
   });
   const color = getColor(5, 10000);
   return (
@@ -32,19 +33,22 @@ const WorldMapInner = ({
             <div>Coverage: ${coverage}</div>
             </div>
            `;
-            // const [cx, cy] = projection([
-            //   obj.properties.lon,
-            //   obj.properties.lat,
-            // ]);
-            // console.log(cx, cy);
+
             return (
               <path
                 key={`country${i}`}
-                ref={obj.properties.name === "China" ? inputEl : t}
+                ref={obj.properties.name === "China" ? chinaTooltip : other}
                 d={path(obj)}
                 fill={color(confirmed)}
-                stroke="#000"
-                strokeWidth={obj.properties.name === "China" ? "1px" : "0.2px"}
+                stroke={
+                  obj.properties.name === activeCountry ? "#4a5c6a" : "#000"
+                }
+                strokeWidth={
+                  obj.properties.name === "China" ||
+                  obj.properties.name === activeCountry
+                    ? "1px"
+                    : "0.2px"
+                }
                 data-for={
                   obj.properties.name === "China"
                     ? "first-click"
@@ -53,10 +57,10 @@ const WorldMapInner = ({
                 data-html
                 data-tip={tooltip_text}
                 onMouseEnter={() => {
-                  ReactTooltip.show(inputEl.current);
+                  ReactTooltip.show(chinaTooltip.current);
                 }}
                 onMouseLeave={() => {
-                  ReactTooltip.show(inputEl.current);
+                  ReactTooltip.show(chinaTooltip.current);
                 }}
               />
             );
@@ -65,8 +69,9 @@ const WorldMapInner = ({
       </svg>
       <ReactTooltip
         id="first-click"
-        overridePosition={(e) => {
-          return { left: e.left, top: e.top + 50 };
+        overridePosition={(e, _, b) => {
+          const { height: pHeight = 50 } = b.getBoundingClientRect();
+          return { left: e.left, top: e.top + pHeight / 2 };
         }}
         multiline
         className="tooltip"

@@ -9,6 +9,7 @@ const PageCoverageTimeline = ({ width = 400, height = 200 }) => {
   const [transformedData, setTransformData] = useState({});
   const [activeDateIndex, setActiveDateIndex] = useState(0);
   const [isStop, setStop] = useState(false);
+  const [activeCountry, setActiveCountry] = useState("");
   const timeoutID = useRef(0);
   useEffect(() => {
     fetch("/json/daily-covid-report-by-country.json")
@@ -60,29 +61,28 @@ const PageCoverageTimeline = ({ width = 400, height = 200 }) => {
     }
   };
 
+  const handleBtnClick = () => {
+    if (isStop) {
+      play(activeDateIndex);
+      setStop(false);
+    } else {
+      stop();
+    }
+  };
+
   return (
-    <>
-      <PageCoverageTimelineInner
-        width={width}
-        dates={dates}
-        data={data}
-        activeDateIndex={activeDateIndex}
-        activeData={data[dates[activeDateIndex]]}
-        onDateClick={onTimelineClick}
-      />
-      <button
-        onClick={() => {
-          if (isStop) {
-            play(activeDateIndex);
-            setStop(false);
-          } else {
-            stop();
-          }
-        }}
-      >
-        {isStop ? "Play" : "Stop"}
-      </button>
-    </>
+    <PageCoverageTimelineInner
+      width={width}
+      dates={dates}
+      data={data}
+      activeDateIndex={activeDateIndex}
+      activeData={data[dates[activeDateIndex]]}
+      onDateClick={onTimelineClick}
+      handleBtnClick={handleBtnClick}
+      isStop={isStop}
+      setActiveCountry={setActiveCountry}
+      activeCountry={activeCountry}
+    />
   );
 };
 
