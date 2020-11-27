@@ -6,8 +6,6 @@ import PlayButton from "../PlayButton/PlayButton";
 
 import "./PageCoverageTimelineInner.css";
 const PageCoverageTimelineInner = ({
-  width = 400,
-  height,
   activeDateIndex,
   dates = [],
   onDateClick,

@@ -1,45 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
+import LoadingBar from "../LoadingBar/LoadingBar";
 
 import PageCoverageTimelineInner from "./PageCoverageTimelineInner";
-import { transformData } from "./transformer";
 
-const PageCoverageTimeline = ({ width = 400, height = 200 }) => {
-  const [coverageData, setCoverageData] = useState({});
-  const [covidData, setCovidData] = useState({});
-  const [transformedData, setTransformData] = useState({});
+const PageCoverageTimeline = ({ data: transformedData }) => {
   const [activeDateIndex, setActiveDateIndex] = useState(0);
   const [isStop, setStop] = useState(false);
   const [activeCountry, setActiveCountry] = useState("");
   const timeoutID = useRef(0);
+
   useEffect(() => {
-    fetch("/json/daily-covid-report-by-country.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setCovidData(data);
-      })
-      .catch(() =>
-        console.error("daily-covid-report-by-country data not found")
-      );
-    fetch("/json/daily-coverage-by-country.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setCoverageData(data);
-      })
-      .catch(() => console.error("daily-coverage-by-country data not found"));
-  }, []);
-  useEffect(() => {
-    setTransformData(transformData(coverageData, covidData));
     setStop(false);
     play(activeDateIndex);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coverageData, covidData]);
+  }, [transformedData]);
 
   const onTimelineClick = (index) => {
     stop();
     setActiveDateIndex(index);
   };
-
-  const { dates = [], data = {} } = transformedData;
 
   const play = (n) => {
     const { dates = [] } = transformedData;
@@ -69,10 +48,9 @@ const PageCoverageTimeline = ({ width = 400, height = 200 }) => {
       stop();
     }
   };
-
-  return (
+  const { dates = [], data = {} } = transformedData;
+  return dates.length ? (
     <PageCoverageTimelineInner
-      width={width}
       dates={dates}
       data={data}
       activeDateIndex={activeDateIndex}
@@ -83,6 +61,8 @@ const PageCoverageTimeline = ({ width = 400, height = 200 }) => {
       setActiveCountry={setActiveCountry}
       activeCountry={activeCountry}
     />
+  ) : (
+    <LoadingBar />
   );
 };
 

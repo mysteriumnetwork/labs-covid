@@ -12,6 +12,7 @@
 }
 .map {
   flex-grow: 4;
+  padding-top: 1px;
 }
 .timelineContainer {
   display: flex;

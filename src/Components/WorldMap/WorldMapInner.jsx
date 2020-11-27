@@ -22,15 +22,15 @@ const WorldMapInner = ({
   const color = getColor(5, 10000);
   return (
     <>
-      <svg width={width} height={height}>
+      <svg width={width} height={height} className="svgContainer">
         <g>
           {features.map((obj, i) => {
             const { confirmed = 0, coverage = 0 } =
               data[obj?.properties?.countryCode] || {};
             const tooltip_text = `<div style="text-align:start">
             <div style="padding-bottom:5px">${obj.properties.name}</div>
-            <div>Confirmed: ${confirmed}</div>
-            <div>Coverage: ${coverage}</div>
+            <div>Confirmed: ${confirmed?.toLocaleString()}</div>
+            <div>Coverage: ${coverage?.toLocaleString()}</div>
             </div>
            `;
 
