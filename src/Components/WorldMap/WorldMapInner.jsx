@@ -106,7 +106,6 @@ const WorldMapInner = ({
             const isRNZ =
               activeCountry === "Russian Federation" ||
               activeCountry === "New Zealand";
-
             const {
               height: pHeight = 50,
               width: pWidth,
@@ -115,7 +114,6 @@ const WorldMapInner = ({
               top,
             } = b.getBoundingClientRect();
             const off = pWidth / 7;
-            console.log(b.getBoundingClientRect(), e);
             return {
               left: isUS ? left + off : isRNZ ? right - off - off : e.left,
               top: isRNZ ? top + pHeight / 3 : e.top + pHeight / 2,
