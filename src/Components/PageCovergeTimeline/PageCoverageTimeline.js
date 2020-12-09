@@ -30,7 +30,7 @@ const PageCoverageTimeline = ({ data: transformedData }) => {
       } else {
         play(0);
       }
-    }, 1000);
+    }, 3000);
   };
 
   const stop = () => {

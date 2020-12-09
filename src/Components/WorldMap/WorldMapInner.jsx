@@ -12,21 +12,25 @@ const WorldMapInner = ({
   data = {},
   activeCountry,
 }) => {
+  const [activeValue, setActiveValue] = React.useState("");
   const chinaTooltip = React.useRef(null);
-  const test = React.useRef(null);
+  const widgetTooltip = React.useRef(null);
+  const hoverTooltip = React.useRef(null);
   const other = React.useRef(null);
-  const { features = [] } = countries;
 
+  const { features = [] } = countries;
   React.useEffect(() => {
     ReactTooltip.rebuild();
     ReactTooltip.show(chinaTooltip.current);
+    ReactTooltip.show(hoverTooltip.current);
+    ReactTooltip.show(widgetTooltip.current);
   });
   React.useEffect(() => {
     if (activeCountry) {
-      ReactTooltip.show(test.current);
+      ReactTooltip.show(widgetTooltip.current);
       ReactTooltip.rebuild();
     } else {
-      ReactTooltip.hide(test.current);
+      ReactTooltip.hide(widgetTooltip.current);
       ReactTooltip.rebuild();
     }
   }, [activeCountry]);
@@ -45,7 +49,6 @@ const WorldMapInner = ({
             <div>Coverage: ${coverage?.toLocaleString()}</div>
             </div>
            `;
-
             return (
               <path
                 key={`country${i}`}
@@ -53,7 +56,9 @@ const WorldMapInner = ({
                   obj.properties.name === "China"
                     ? chinaTooltip
                     : obj.properties.name === activeCountry
-                    ? test
+                    ? widgetTooltip
+                    : obj.properties.name === activeValue
+                    ? hoverTooltip
                     : other
                 }
                 d={path(obj)}
@@ -69,26 +74,29 @@ const WorldMapInner = ({
                 }
                 data-for={
                   obj.properties.name === "China"
-                    ? "first-click"
+                    ? "china-tooltip"
                     : obj.properties.name === activeCountry
-                    ? "test"
-                    : "second-click"
+                    ? "widget-tooltip"
+                    : "hover-tooltip"
                 }
                 data-html
                 data-tip={tooltip_text}
                 onMouseEnter={() => {
+                  setActiveValue(obj.properties.name);
                   ReactTooltip.show(chinaTooltip.current);
                 }}
                 onMouseLeave={() => {
                   ReactTooltip.show(chinaTooltip.current);
+                  setActiveValue("");
                 }}
               />
             );
           })}
         </g>
       </svg>
+
       <ReactTooltip
-        id="first-click"
+        id="china-tooltip"
         overridePosition={(e, _, b) => {
           const { height: pHeight = 50 } = b.getBoundingClientRect();
           return { left: e.left, top: e.top + pHeight / 2 };
@@ -98,9 +106,9 @@ const WorldMapInner = ({
       />
       {activeCountry && (
         <ReactTooltip
-          id="test"
+          id="widget-tooltip"
           place="top"
-          afterHide={() => (test.current = null)}
+          afterHide={() => (widgetTooltip.current = null)}
           overridePosition={(e, _, b) => {
             const isUS = activeCountry === "United States";
             const isRNZ =
@@ -123,7 +131,16 @@ const WorldMapInner = ({
           className="tooltip"
         />
       )}
-      <ReactTooltip id="second-click" multiline data-html className="tooltip" />
+      <ReactTooltip
+        id="hover-tooltip"
+        multiline
+        data-html
+        className="tooltip"
+        overridePosition={(e, _, b, i, o) => {
+          const { height: pHeight, width: pWidth } = i.getBoundingClientRect();
+          return { left: _.clientX - pWidth / 2, top: _.clientY - pHeight };
+        }}
+      />
     </>
   );
 };
