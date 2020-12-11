@@ -10,6 +10,8 @@ const PageCoverageTimeline = ({ data: transformedData }) => {
   const timeoutID = useRef(0)
 
   useEffect(() => {
+    console.log('useEffect')
+
     setStop(false)
     play(activeDateIndex)
     // eslint-disable-next-line react-hooks/exhaustive-deps

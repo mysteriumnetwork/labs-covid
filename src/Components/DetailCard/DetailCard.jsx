@@ -30,10 +30,10 @@ const DetailCard = ({
         </h3>
         <div className="rounded-md mt-2 h-40 overflow-y-auto">
           { topCountries.map((obj) => (
-            <h3 className="rounded-md p-2 mb-2 bg-white leading-6 font-medium text-gray-900"
+            <h3 key={obj.code} className="rounded-md p-2 mb-2 bg-white leading-6 font-medium text-gray-900"
                 onMouseEnter={ () => setActiveCountry(obj.name) }
                 onMouseLeave={ () => setActiveCountry('') }>
-              { obj.code }: { obj[type] && obj[type]?.toLocaleString() }
+              { obj.name }: { obj[type] && obj[type]?.toLocaleString() }
             </h3>
           )) }
         </div>

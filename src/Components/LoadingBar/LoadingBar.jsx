@@ -3,9 +3,9 @@ import "./LoadingBar.css";
 
 const LoadingBar = () => (
   <div>
-    <div class="outer">
-      <div class="middle">
-        <div class="inner"></div>
+    <div className="outer">
+      <div className="middle">
+        <div className="inner"></div>
       </div>
     </div>
     Loading...
