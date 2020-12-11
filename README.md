@@ -8,7 +8,7 @@ A small [CRA](https://reactjs.org/docs/create-a-new-react-app.html) app to build
 
 Pre-processed data is stored in `data/raw` directory.
 
-Post-processed data is stored in `data/generated` directory.
+Post-processed data is stored in `public/json` directory.
 
 ### Processing scripts
 

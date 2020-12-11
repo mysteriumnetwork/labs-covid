@@ -3,19 +3,20 @@ import LoadingBar from '../LoadingBar/LoadingBar'
 
 import PageCoverageTimelineInner from './PageCoverageTimelineInner'
 
-const PageCoverageTimeline = ({ data: transformedData }) => {
+const PageCoverageTimeline = ({ data: dailyData }) => {
   const [activeDateIndex, setActiveDateIndex] = useState(0)
   const [isStop, setStop] = useState(false)
   const [activeCountry, setActiveCountry] = useState('cn')
   const timeoutID = useRef(0)
 
-  useEffect(() => {
-    console.log('useEffect')
+  let dates = Object.keys(dailyData)
 
+  useEffect(() => {
     setStop(false)
+    dates = Object.keys(dailyData)
     play(activeDateIndex)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transformedData])
+  }, [dailyData])
 
   const onTimelineClick = (index) => {
     stop()
@@ -23,7 +24,6 @@ const PageCoverageTimeline = ({ data: transformedData }) => {
   }
 
   const play = (n) => {
-    const { dates = [] } = transformedData
     window.clearTimeout(timeoutID.current)
     timeoutID.current = window.setTimeout(() => {
       setActiveDateIndex(n++)
@@ -32,7 +32,7 @@ const PageCoverageTimeline = ({ data: transformedData }) => {
       } else {
         play(0)
       }
-    }, 1000)
+    }, 3000)
   }
 
   const stop = () => {
@@ -50,13 +50,12 @@ const PageCoverageTimeline = ({ data: transformedData }) => {
       stop()
     }
   }
-  const { dates = [], data = {} } = transformedData
   return dates.length ? (
     <PageCoverageTimelineInner
       dates={ dates }
-      data={ data }
+      data={ dailyData }
       activeDateIndex={ activeDateIndex }
-      activeData={ data[dates[activeDateIndex]] }
+      activeData={ dailyData[dates[activeDateIndex]] }
       onDateClick={ onTimelineClick }
       handleBtnClick={ handleBtnClick }
       isStop={ isStop }

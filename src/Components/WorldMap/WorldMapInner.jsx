@@ -41,12 +41,13 @@ const WorldMapInner = ({
       <svg width={width} height={height} className="svgContainer">
         <g>
           {features.map((obj, i) => {
-            const { confirmed = 0, coverage = 0 } =
+            const { c = 0, a = 0, d = 0 } =
               data[obj?.properties?.countryCode] || {};
             const tooltip_text = `<div style="text-align:start">
             <div style="padding-bottom:5px">${obj.properties.name}</div>
-            <div>Confirmed: ${confirmed?.toLocaleString()}</div>
-            <div>Coverage: ${coverage?.toLocaleString()}</div>
+            <div>Confirmed: ${c?.toLocaleString()}</div>
+            <div>Deaths: ${d?.toLocaleString()}</div>
+            <div>Coverage: <strong>${a?.toLocaleString()}</strong></div>
             </div>
            `;
             return (
@@ -62,7 +63,7 @@ const WorldMapInner = ({
                     : other
                 }
                 d={path(obj)}
-                fill={color(confirmed)}
+                fill={color(c)}
                 stroke={
                   obj.properties.name === activeCountry ? "#4a5c6a" : "#000"
                 }

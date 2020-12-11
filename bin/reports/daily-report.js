@@ -29,7 +29,12 @@ const missingCountryMap = {
 }
 
 const formatDate = (date) => {
-  return dayjs(date, 'M/DD/YY').format('YYYY-MM-DD')
+  let d = dayjs(date, 'M/DD/YY')
+  if(!d.isValid()) {
+    d = dayjs(date, 'M/D/YY')
+  }
+
+  return d.format('YYYY-MM-DD')
 }
 
 const getCountryCode = (country) => {
@@ -39,7 +44,7 @@ const getCountryCode = (country) => {
 
   let c = lookup.byCountry(country)
   if (!c) {
-    console.log('Missing country mapping', country)
+    // console.log('Missing country mapping', country)
     return null
   }
 
@@ -77,11 +82,11 @@ const fetchFile = (url, type = '') => {
               if (typeof report[newDate][country] === 'undefined') {
                 report[newDate][country] = {}
               }
-              if (typeof report[newDate][country][type] === 'undefined') {
-                report[newDate][country][type] = 0
+              if (typeof report[newDate][country][type[0]] === 'undefined') {
+                report[newDate][country][type[0]] = 0
               }
 
-              report[newDate][country][type] += parseInt(row[date], 10)
+              report[newDate][country][type[0]] += parseInt(row[date], 10)
             }
           }
         })
@@ -94,10 +99,58 @@ const fetchFile = (url, type = '') => {
   })()
 }
 
+const rawReport = []
+fs.readFileSync(path.join(__dirname, '../../data/raw/covid-article-summary.json'))
+  .toString()
+  .split('\n')
+  .forEach((line) => {
+    if (!line) {
+      return
+    }
+
+    const obj = JSON.parse(line)
+    if(obj.count === 0) {
+      return
+    }
+    rawReport.push({
+      date: obj.date,
+      country: obj.contextCountry, // reported about
+      sourceCountry: obj.sourceCountry, // reported by
+      count: obj.count
+    })
+  })
+
+
+const articleReport = () => {
+  rawReport.forEach((r) => {
+    if (typeof report[r.date] === 'undefined') {
+      report[r.date] = {}
+    }
+
+    const countryCode = r.sourceCountry || 'unknown'
+
+    if (typeof report[r.date][countryCode] === 'undefined') {
+      report[r.date][countryCode] = {a: parseInt(r.count, 10)}
+    } else {
+      report[r.date][countryCode].a += parseInt(r.count, 10)
+    }
+  })
+}
+
 Promise.all([
   fetchFile(confirmedCasesURL, 'confirmed'),
   fetchFile(deathsURL, 'deaths'),
   fetchFile(recoveredURL, 'recovered'),
+  articleReport()
 ]).then(() => {
-  fs.writeFileSync(path.join(__dirname, '../../data/generated/daily-covid-report-by-country.json'), JSON.stringify(report, null, 2))
+  for(let date in report) {
+    for(let country in report[date]) {
+      const item = report[date][country]
+      const sum = item.c + item.d + item.r
+      if(sum === 0) {
+        delete report[date][country]
+      }
+    }
+  }
+  fs.writeFileSync(path.join(__dirname, '../../public/json/daily-report.json'), JSON.stringify(report))
 })

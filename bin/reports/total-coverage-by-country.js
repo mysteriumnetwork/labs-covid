@@ -30,4 +30,4 @@ rawReport.forEach((r) => {
   }
 })
 
-fs.writeFileSync(path.join(__dirname, '../../data/generated/total-coverage-by-country.json'), JSON.stringify(report, null, 2))
+fs.writeFileSync(path.join(__dirname, '../../public/json/total-coverage-by-country.json'), JSON.stringify(report, null, 2))
