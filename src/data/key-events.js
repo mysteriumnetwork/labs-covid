@@ -125,6 +125,6 @@ module.exports = {
     "title": "Caixin calls out Chinese crisis response"
   },
   "2020-03-11": {
-    "title": "Covid-19 declared global pandemic"
+    "title": "Covid-19 declared global pandemic "
   }
 }

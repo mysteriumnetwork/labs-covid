@@ -10,7 +10,7 @@ const map = (currentDate) => {
 
   for (let date in events) {
     let ts = dayjs(date, 'YYYY-M-DD').unix()
-    if (cd > ts) {
+    if (cd >= ts) {
       found = {
         date: date,
         title: events[date].title,

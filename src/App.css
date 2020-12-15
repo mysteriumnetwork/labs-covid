@@ -3,7 +3,7 @@ ul[data-radium="true"]:not(.buttons) {
 }
 
 .button-forward, .button-back {
-    top: 64px !important;
+    top: 49px !important;
 }
 
 .events-wrapper {

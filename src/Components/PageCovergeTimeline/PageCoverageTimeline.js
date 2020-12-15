@@ -30,7 +30,7 @@ const PageCoverageTimeline = ({ data: dailyData }) => {
       if (n < dates.length) {
         play(n)
       } else {
-        play(0)
+        stop()
       }
     }, 3000)
   }

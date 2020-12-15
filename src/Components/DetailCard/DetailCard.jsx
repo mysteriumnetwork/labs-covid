@@ -55,7 +55,7 @@ const DetailCard = ({
             <h3 key={ country.code } className="rounded-md p-2 mb-2 bg-white leading-6 font-medium text-gray-900"
                 onMouseEnter={ () => setActiveCountry(country.name) }
                 onMouseLeave={ () => setActiveCountry('') }>
-              { country.name }: { country.value || 0 }
+              { country.name }: { (country.value || 0).toLocaleString() }
             </h3>
           )) }
         </div>

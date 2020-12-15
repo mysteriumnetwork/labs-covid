@@ -4,6 +4,8 @@ const fs = require('fs')
 const path = require('path')
 const lookup = require('country-code-lookup')
 const dayjs = require('dayjs')
+const fipsToIso = require('../../data/fips-to-iso')
+
 dayjs.extend(require('dayjs/plugin/customParseFormat'))
 
 const confirmedCasesURL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
@@ -30,7 +32,7 @@ const missingCountryMap = {
 
 const formatDate = (date) => {
   let d = dayjs(date, 'M/DD/YY')
-  if(!d.isValid()) {
+  if (!d.isValid()) {
     d = dayjs(date, 'M/D/YY')
   }
 
@@ -109,13 +111,18 @@ fs.readFileSync(path.join(__dirname, '../../data/raw/covid-article-summary.json'
     }
 
     const obj = JSON.parse(line)
-    if(obj.count === 0) {
+    if (obj.count === 0 || !obj.sourceCountry) {
       return
     }
+
+    if (!fipsToIso[obj.sourceCountry]) {
+      return
+    }
+
     rawReport.push({
       date: obj.date,
       country: obj.contextCountry, // reported about
-      sourceCountry: obj.sourceCountry, // reported by
+      sourceCountry: fipsToIso[obj.sourceCountry], // reported by
       count: obj.count
     })
   })
@@ -130,7 +137,7 @@ const articleReport = () => {
     const countryCode = r.sourceCountry || 'unknown'
 
     if (typeof report[r.date][countryCode] === 'undefined') {
-      report[r.date][countryCode] = {a: parseInt(r.count, 10)}
+      report[r.date][countryCode] = { a: parseInt(r.count, 10) }
     } else {
       report[r.date][countryCode].a += parseInt(r.count, 10)
     }
@@ -143,11 +150,11 @@ Promise.all([
   fetchFile(recoveredURL, 'recovered'),
   articleReport()
 ]).then(() => {
-  for(let date in report) {
-    for(let country in report[date]) {
+  for (let date in report) {
+    for (let country in report[date]) {
       const item = report[date][country]
       const sum = item.c + item.d + item.r
-      if(sum === 0) {
+      if (sum === 0) {
         delete report[date][country]
       }
     }

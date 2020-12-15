@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PageCoverageTimeline from './Components/PageCovergeTimeline'
 import PageMobileView from './Components/PageMobileView'
+import MediaQuery from 'react-responsive'
 
 import './App.css'
 import LoadingBar from './Components/LoadingBar/LoadingBar'
@@ -11,7 +12,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/json/daily-report.json')
+    fetch('json/daily-report.json')
       .then((res) => res.json())
       .then((data) => {
         setCovidData(data)
@@ -33,7 +34,12 @@ const App = () => {
 
   return (
     <div>
-      <PageCoverageTimeline data={ transformedData }/>
+      <MediaQuery minWidth={ 1024 }>
+        <PageCoverageTimeline data={ transformedData }/>
+      </MediaQuery>
+      <MediaQuery maxWidth={ 1024 }>
+        <PageMobileView data={ transformedData }/>
+      </MediaQuery>
     </div>
   )
 }
