@@ -48,7 +48,7 @@ const DetailCard = ({
           { title }
         </h3>
         <h3 className="text-lg rounded-md p-2 bg-purple-500 text-white leading-6 font-medium">
-          { pinnedCountryName }: { pinnedCountryMetric }
+          { pinnedCountryName }: { pinnedCountryMetric.toLocaleString() }
         </h3>
         <div className="rounded-md mt-2 h-40 overflow-y-auto">
           { topCountries.map((country) => (
