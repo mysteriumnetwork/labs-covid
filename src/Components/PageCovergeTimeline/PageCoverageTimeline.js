@@ -32,7 +32,7 @@ const PageCoverageTimeline = ({ data: dailyData }) => {
       } else {
         stop()
       }
-    }, 3000)
+    }, 2000)
   }
 
   const stop = () => {
