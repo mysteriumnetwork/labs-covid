@@ -147,13 +147,13 @@ const articleReport = () => {
 Promise.all([
   fetchFile(confirmedCasesURL, 'confirmed'),
   fetchFile(deathsURL, 'deaths'),
-  fetchFile(recoveredURL, 'recovered'),
+  // fetchFile(recoveredURL, 'recovered'),
   articleReport()
 ]).then(() => {
   for (let date in report) {
     for (let country in report[date]) {
       const item = report[date][country]
-      const sum = item.c + item.d + item.r
+      const sum = item.c + item.d + item.a
       if (sum === 0) {
         delete report[date][country]
       }
